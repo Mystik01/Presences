@@ -1,15 +1,10 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.12",
+	"apiVersion": 1,
 	"author": {
 		"name": "Bas950",
 		"id": "241278257335500811"
 	},
-	"contributors": [
-		{
-			"name": "Bryan",
-			"id": "293775922757238784"
-		}
-	],
 	"service": "NameMC",
 	"description": {
 		"en": "Check the availability of Minecraft names, look up the name history of Minecraft accounts, view Minecraft skins in 3D, convert UUIDs, and much more!",
@@ -17,9 +12,9 @@
 	},
 	"url": "namemc.com",
 	"regExp": "([a-z0-9-]+[.])*namemc[.]com[/]",
-	"version": "2.0.10",
-	"logo": "https://i.imgur.com/9JDmZaF.png",
-	"thumbnail": "https://i.imgur.com/XIZsGTQ.png",
+	"version": "2.0.23",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/N/NameMC/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/N/NameMC/assets/thumbnail.png",
 	"color": "#000000",
 	"category": "games",
 	"tags": [
@@ -31,6 +26,12 @@
 		{
 			"id": "lang",
 			"multiLanguage": true
+		},
+		{
+			"id": "privacy",
+			"title": "Privacy Mode",
+			"icon": "fad fa-user-secret",
+			"value": false
 		},
 		{
 			"id": "buttons",

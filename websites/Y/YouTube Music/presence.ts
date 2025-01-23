@@ -7,7 +7,8 @@ let prevTitleAuthor = "",
 	mediaTimestamps: [number, number],
 	oldPath: string,
 	startTimestamp: number,
-	videoListenerAttached = false;
+	videoListenerAttached = false,
+	useTimeLeftChanged = false;
 
 presence.on("UpdateData", async () => {
 	const { pathname, search, href } = document.location,
@@ -18,6 +19,8 @@ presence.on("UpdateData", async () => {
 			hidePaused,
 			showBrowsing,
 			privacyMode,
+			useTimeLeft,
+			showAsListening,
 		] = await Promise.all([
 			presence.getSetting<boolean>("buttons"),
 			presence.getSetting<boolean>("timestamps"),
@@ -25,23 +28,36 @@ presence.on("UpdateData", async () => {
 			presence.getSetting<boolean>("hidePaused"),
 			presence.getSetting<boolean>("browsing"),
 			presence.getSetting<boolean>("privacy"),
+			presence.getSetting<boolean>("useTimeLeft"),
+			presence.getSetting<boolean>("showAsListening"),
 		]),
 		{ mediaSession } = navigator,
-		watchID = document
-			.querySelector<HTMLAnchorElement>("a.ytp-title-link.yt-uix-sessionlink")
-			.href.match(/v=([^&#]{5,})/)?.[1],
+		watchID =
+			href.match(/v=([^&#]{5,})/)?.[1] ??
+			document
+				.querySelector<HTMLAnchorElement>("a.ytp-title-link.yt-uix-sessionlink")
+				?.href.match(/v=([^&#]{5,})/)?.[1],
 		repeatMode = document
 			.querySelector('ytmusic-player-bar[slot="player-bar"]')
-			.getAttribute("repeat-Mode_"),
+			?.getAttribute("repeat-mode"),
 		videoElement =
 			document.querySelector<HTMLVideoElement>("video.video-stream");
 
-	if (videoElement) {
+	if (useTimeLeftChanged !== useTimeLeft && !privacyMode) {
+		useTimeLeftChanged = useTimeLeft;
+		updateSongTimestamps(useTimeLeft);
+	}
+
+	if (videoElement && !privacyMode) {
 		if (!videoListenerAttached) {
 			//* If video scrobbled, update timestamps
-			videoElement.addEventListener("seeked", updateSongTimestamps);
+			videoElement.addEventListener("seeked", () =>
+				updateSongTimestamps(useTimeLeft)
+			);
 			//* If video resumes playing, update timestamps
-			videoElement.addEventListener("play", updateSongTimestamps);
+			videoElement.addEventListener("play", () =>
+				updateSongTimestamps(useTimeLeft)
+			);
 
 			videoListenerAttached = true;
 		}
@@ -51,22 +67,22 @@ presence.on("UpdateData", async () => {
 		videoListenerAttached = false;
 	}
 
-	presenceData = null;
+	presenceData = {};
 
-	if (hidePaused && mediaSession.playbackState !== "playing")
+	if (hidePaused && mediaSession?.playbackState !== "playing")
 		return presence.clearActivity();
 
-	if (["playing", "paused"].includes(mediaSession.playbackState)) {
+	if (["playing", "paused"].includes(mediaSession?.playbackState)) {
 		if (privacyMode) {
 			return presence.setActivity({
-				...(mediaSession.playbackState === "playing" && {
-					largeImageKey: "ytm_lg",
-					details: "Listening to music",
-				}),
+				type: ActivityType.Listening,
+				largeImageKey:
+					"https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png",
 			});
 		}
 
-		if (!mediaSession.metadata?.title || isNaN(videoElement.duration)) return;
+		if (!mediaSession?.metadata?.title || isNaN(videoElement?.duration ?? NaN))
+			return;
 
 		if (
 			prevTitleAuthor !==
@@ -74,9 +90,9 @@ presence.on("UpdateData", async () => {
 				mediaSession.metadata.artist +
 				document
 					.querySelector<HTMLSpanElement>("#left-controls > span")
-					.textContent.trim()
+					?.textContent?.trim()
 		) {
-			updateSongTimestamps();
+			updateSongTimestamps(useTimeLeft);
 
 			if (mediaTimestamps[0] === mediaTimestamps[1]) return;
 
@@ -85,11 +101,11 @@ presence.on("UpdateData", async () => {
 				mediaSession.metadata.artist +
 				document
 					.querySelector<HTMLSpanElement>("#left-controls > span")
-					.textContent.trim();
+					?.textContent?.trim();
 		}
 
-		const albumArtistBtnLink = mediaSession.metadata.album
-				? [...document.querySelectorAll<HTMLAnchorElement>(".byline a")].at(-1)
+		const albumArtistBtnLink = mediaSession?.metadata?.album
+				? [...document.querySelectorAll<HTMLAnchorElement>(".byline a")]?.at(-1)
 						?.href
 				: document.querySelector<HTMLAnchorElement>(".byline a")?.href,
 			buttons: [ButtonData, ButtonData?] = [
@@ -107,32 +123,37 @@ presence.on("UpdateData", async () => {
 		}
 
 		presenceData = {
+			type: ActivityType.Listening,
+			name: showAsListening ? mediaSession.metadata.title : "YouTube Music",
 			largeImageKey: showCover
-				? mediaSession.metadata.artwork.at(-1).src
-				: "ytm_lg",
+				? mediaSession?.metadata?.artwork?.at(-1)?.src ??
+				  "https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/1.png"
+				: "https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/1.png",
 			details: mediaSession.metadata.title,
-			state: [mediaSession.metadata.artist, mediaSession.metadata.album]
-				.filter(Boolean)
-				.join(" - "),
+			state: mediaSession.metadata.artist,
+			...(mediaSession.metadata.album && {
+				largeImageText: mediaSession.metadata.album,
+			}),
 			...(showButtons && {
 				buttons,
 			}),
-			smallImageKey:
-				mediaSession.playbackState === "paused"
-					? "pause"
-					: repeatMode === "ONE"
-					? "repeat-one"
-					: repeatMode === "ALL"
-					? "repeat"
-					: "play",
-			smallImageText:
-				mediaSession.playbackState === "paused"
-					? "Paused"
-					: repeatMode === "ONE"
-					? "On loop"
-					: repeatMode === "ALL"
-					? "Playlist on loop"
-					: "Playing",
+			...(mediaSession.playbackState === "paused" ||
+			(repeatMode && repeatMode !== "NONE")
+				? {
+						smallImageKey:
+							mediaSession.playbackState === "paused"
+								? Assets.Pause
+								: repeatMode === "ONE"
+								? Assets.RepeatOne
+								: Assets.Repeat,
+						smallImageText:
+							mediaSession.playbackState === "paused"
+								? "Paused"
+								: repeatMode === "ONE"
+								? "On loop"
+								: "Playlist on loop",
+				  }
+				: null),
 			...(showTimestamps &&
 				mediaSession.playbackState === "playing" && {
 					startTimestamp: mediaTimestamps[0],
@@ -142,7 +163,8 @@ presence.on("UpdateData", async () => {
 	} else if (showBrowsing) {
 		if (privacyMode) {
 			return presence.setActivity({
-				largeImageKey: "ytm_lg",
+				largeImageKey:
+					"https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png",
 				details: "Browsing YouTube Music",
 			});
 		}
@@ -153,7 +175,9 @@ presence.on("UpdateData", async () => {
 		}
 
 		presenceData = {
-			largeImageKey: "ytm_lg",
+			type: ActivityType.Playing,
+			largeImageKey:
+				"https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png",
 			details: "Browsing",
 			startTimestamp,
 		};
@@ -166,7 +190,7 @@ presence.on("UpdateData", async () => {
 			presenceData.details = "Browsing Library";
 			presenceData.state = document.querySelector(
 				"#tabs .iron-selected .tab"
-			).textContent;
+			)?.textContent;
 		}
 
 		if (pathname.match(/^\/playlist/)) {
@@ -175,7 +199,7 @@ presence.on("UpdateData", async () => {
 			if (search === "?list=LM") presenceData.state = "Liked Music";
 			else {
 				presenceData.state =
-					document.querySelector(".metadata .title").textContent;
+					document.querySelector(".metadata .title")?.textContent;
 
 				presenceData.buttons = [
 					{
@@ -186,15 +210,16 @@ presence.on("UpdateData", async () => {
 			}
 
 			presenceData.largeImageKey =
-				document.querySelector<HTMLImageElement>("#thumbnail img").src;
-			presenceData.smallImageKey = "ytm_lg";
+				document.querySelector<HTMLImageElement>("#thumbnail img")?.src;
+			presenceData.smallImageKey =
+				"https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/0.png";
 		}
 
 		if (pathname.match(/^\/search/)) {
 			presenceData.details = "Searching";
 			presenceData.state = document.querySelector<HTMLInputElement>(
 				".search-container input"
-			).value;
+			)?.value;
 
 			presenceData.buttons = [
 				{
@@ -206,7 +231,8 @@ presence.on("UpdateData", async () => {
 
 		if (pathname.match(/^\/channel/)) {
 			presenceData.details = "Browsing Channel";
-			presenceData.state = document.querySelector("#header .title").textContent;
+			presenceData.state =
+				document.querySelector("#header .title")?.textContent;
 
 			presenceData.buttons = [
 				{
@@ -250,21 +276,25 @@ presence.on("UpdateData", async () => {
 		}
 	}
 
-	if (!showBrowsing) return presence.clearActivity();
-
-	//* For some bizarre reason the timestamps are NaN eventho they are never actually set in testing, this spread is a workaround
 	presence.setActivity(presenceData);
 });
 
-function updateSongTimestamps() {
-	const element = document
+function updateSongTimestamps(useTimeLeft: boolean) {
+	const [currTimes, totalTimes] =
+		document
 			.querySelector<HTMLSpanElement>("#left-controls > span")
-			.textContent.trim(),
-		currTimes = element.match(/(\d{1,2}):(\d{1,2})/),
-		totalTimes = element.match(/(\d{1,2}):(\d{1,2})$/);
+			?.textContent?.trim()
+			?.split(" / ") ?? [];
 
-	mediaTimestamps = presence.getTimestamps(
-		parseInt(currTimes[1]) * 60 + parseInt(currTimes[2]),
-		parseInt(totalTimes[1]) * 60 + parseInt(totalTimes[2])
-	);
+	if (useTimeLeft && currTimes && totalTimes) {
+		mediaTimestamps = presence.getTimestamps(
+			presence.timestampFromFormat(currTimes),
+			presence.timestampFromFormat(totalTimes)
+		);
+	} else if (currTimes) {
+		mediaTimestamps = [
+			Date.now() / 1000 - presence.timestampFromFormat(currTimes),
+			0,
+		];
+	}
 }

@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.12",
+	"apiVersion": 1,
 	"author": {
 		"name": "Rick",
 		"id": "211982234964590592"
@@ -12,13 +13,10 @@
 		"nl": "De grootste Anime Discord server ter wereld!",
 		"vi_VN": "Máy chủ Discord về Anime lớn nhất thế giới!"
 	},
-	"url": [
-		"animesoul.com",
-		"shoob.gg"
-	],
-	"version": "1.1.19",
-	"logo": "https://i.imgur.com/fd4DHxK.png",
-	"thumbnail": "https://i.imgur.com/jvhu7Ww.jpg",
+	"url": "animesoul.com",
+	"version": "1.2.9",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/A/Anime%20Soul/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/A/Anime%20Soul/assets/thumbnail.jpg",
 	"color": "#7289da",
 	"category": "other",
 	"tags": [
