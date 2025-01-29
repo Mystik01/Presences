@@ -35,7 +35,8 @@ setInterval(() => {
 presence.on("UpdateData", async () => {
 	const privacySettings = await presence.getSetting<boolean>("privacy");
 	let presenceData: PresenceData = {
-		largeImageKey: "logo",
+		largeImageKey:
+			"https://cdn.rcd.gg/PreMiD/websites/O/OpenStreetMap/assets/logo.png",
 		startTimestamp: browsingTimestamp,
 		details: "Viewing:",
 	};
@@ -60,7 +61,7 @@ presence.on("UpdateData", async () => {
 
 	for (const [path, data] of Object.entries(pages)) {
 		if (document.location.pathname.includes(path))
-			presenceData = { ...presenceData, ...data };
+			presenceData = { ...presenceData, ...data } as PresenceData;
 	}
 
 	const pagesSubdomain: Record<string, PresenceData> = {
@@ -75,7 +76,7 @@ presence.on("UpdateData", async () => {
 
 	for (const [path, data] of Object.entries(pagesSubdomain)) {
 		if (document.location.hostname.startsWith(path))
-			presenceData = { ...presenceData, ...data };
+			presenceData = { ...presenceData, ...data } as PresenceData;
 	}
 
 	if (document.location.hostname.startsWith("help")) {

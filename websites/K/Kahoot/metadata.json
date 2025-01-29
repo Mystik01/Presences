@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "Striker",
 		"id": "215509157837537280"
@@ -10,10 +11,6 @@
 			"id": "564434085708038144"
 		},
 		{
-			"name": "Alanexei ✔",
-			"id": "163319338403627008"
-		},
-		{
 			"name": "theusaf",
 			"id": "193714715631812608"
 		}
@@ -22,16 +19,16 @@
 	"description": {
 		"en": "Kahoot! is a game-based platform that makes learning awesome for millions of people all over the world.",
 		"nl": "Kahoot! is een op games gebaseerd platform dat leren geweldig maakt voor miljoenen mensen over de hele wereld.",
-		"vi_VN": "Kahoot! là nền tảng trò chơi khiến việc học tập trở nên tuyệt vời cho hàng triệu người trên khắp thế giới."
+		"vi": "Kahoot! là nền tảng trò chơi khiến việc học tập trở nên tuyệt vời cho hàng triệu người trên khắp thế giới."
 	},
 	"url": [
 		"kahoot.it",
 		"play.kahoot.it",
 		"create.kahoot.it"
 	],
-	"version": "2.1.2",
-	"logo": "https://i.imgur.com/yrWMYRs.png",
-	"thumbnail": "https://i.imgur.com/3DGbV8e.png",
+	"version": "2.1.16",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/K/Kahoot/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/K/Kahoot/assets/thumbnail.png",
 	"color": "#46178f",
 	"category": "games",
 	"tags": [

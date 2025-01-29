@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "madmendes",
 		"id": "559097551362457607"
@@ -13,13 +14,13 @@
 	"service": "Alura",
 	"description": {
 		"en": "The largest online technology school in Brazil.",
-		"pt_BR": "A maior escola online de tecnologia do Brasil."
+		"pt-br": "A maior escola online de tecnologia do Brasil."
 	},
 	"url": "www.alura.com.br",
 	"regExp": "([a-z0-9]+)[.]alura.com.br",
-	"version": "1.1.1",
-	"logo": "https://i.imgur.com/PAVyL0E.png",
-	"thumbnail": "https://i.imgur.com/7IevIec.png",
+	"version": "1.1.13",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/A/Alura/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/A/Alura/assets/thumbnail.png",
 	"color": "#051932",
 	"category": "other",
 	"tags": [

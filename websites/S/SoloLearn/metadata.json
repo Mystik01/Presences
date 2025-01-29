@@ -1,15 +1,10 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "Striker",
 		"id": "215509157837537280"
 	},
-	"contributors": [
-		{
-			"name": "Alanexei ✔",
-			"id": "163319338403627008"
-		}
-	],
 	"service": "SoloLearn",
 	"description": {
 		"en": "SoloLearn has the largest collection of FREE code learning content, from beginner to pro! Choose from thousands of programming topics to learn coding concepts, brush up your programming knowledge, or stay aligned with the latest coding trends.",
@@ -17,9 +12,9 @@
 	},
 	"url": "www.sololearn.com",
 	"regExp": "([a-z0-9-]+[.])*sololearn[.]com[/]",
-	"version": "2.0.15",
-	"logo": "https://i.imgur.com/MPEOcif.png",
-	"thumbnail": "https://i.imgur.com/k7Mi8zh.png",
+	"version": "2.0.27",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/S/SoloLearn/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/S/SoloLearn/assets/thumbnail.png",
 	"color": "#1ABC9C",
 	"category": "other",
 	"tags": [

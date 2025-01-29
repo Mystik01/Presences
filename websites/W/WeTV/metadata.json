@@ -1,7 +1,8 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
-		"name": "Slowlife",
+		"name": "slowlife.",
 		"id": "374905512661221377"
 	},
 	"service": "WeTV",
@@ -15,14 +16,22 @@
 		"id": "WeTV adalah produsen dan penyedia layanan video global berkualitas tinggi."
 	},
 	"url": "wetv.vip",
-	"version": "1.0.8",
-	"logo": "https://i.imgur.com/Cjnky1h.png",
-	"thumbnail": "https://i.imgur.com/6RYiPx8.png",
+	"version": "2.0.2",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/W/WeTV/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/W/WeTV/assets/thumbnail.png",
 	"color": "#ffffff",
 	"category": "videos",
 	"tags": [
 		"kdrama",
 		"anime",
 		"cdrama"
+	],
+	"settings": [
+		{
+			"id": "showCover",
+			"title": "Show Cover",
+			"icon": "fas fa-images",
+			"value": true
+		}
 	]
 }

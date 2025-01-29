@@ -5,7 +5,8 @@ const presence = new Presence({
 
 presence.on("UpdateData", async () => {
 	let presenceData: PresenceData = {
-		largeImageKey: "logo",
+		largeImageKey:
+			"https://cdn.rcd.gg/PreMiD/websites/G/Geotastic/assets/logo.png",
 		details: "Viewing an unsupported page",
 		startTimestamp: browsingTimestamp,
 	};
@@ -38,7 +39,7 @@ presence.on("UpdateData", async () => {
 
 	for (const [path, data] of Object.entries(pages)) {
 		if (document.location.pathname.includes(path))
-			presenceData = { ...presenceData, ...data };
+			presenceData = { ...presenceData, ...data } as PresenceData;
 	}
 
 	switch (true) {

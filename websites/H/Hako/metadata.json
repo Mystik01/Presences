@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "Kinue",
 		"id": "634246091293851649"
@@ -7,16 +8,16 @@
 	"service": "Hako",
 	"description": {
 		"en": "Read vietnamese translated light/web novels online.",
-		"vi_VN": "Đọc light/web novels đã đươc dịch online",
+		"vi": "Đọc light/web novels đã đươc dịch online",
 		"nl": "Lees online Vietnamees vertaalde licht- / webromans."
 	},
 	"url": [
 		"docln.net",
 		"ln.hako.re"
 	],
-	"version": "1.0.9",
-	"logo": "https://i.imgur.com/rkmqU73.png",
-	"thumbnail": "https://i.imgur.com/tn5PhoK.png",
+	"version": "1.0.19",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/H/Hako/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/H/Hako/assets/thumbnail.png",
 	"color": "#1e5069",
 	"category": "anime",
 	"tags": [

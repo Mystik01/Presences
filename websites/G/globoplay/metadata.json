@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "fror",
 		"id": "515668127829458945"
@@ -18,12 +19,12 @@
 	"description": {
 		"en": "Watch the best entertainment videos, live sports, journalism, and more whenever and wherever you want.",
 		"nl": "Bekijk de beste entertainmentvideo's, live sport, journalistiek en meer wanneer en waar u maar wilt.",
-		"pt_BR": "Assista aos melhores vídeos de entretenimento, esportes ao vivo, jornalismo e muito mais quando e onde quiser."
+		"pt-br": "Assista aos melhores vídeos de entretenimento, esportes ao vivo, jornalismo e muito mais quando e onde quiser."
 	},
 	"url": "globoplay.globo.com",
-	"version": "2.2.0",
-	"logo": "https://i.imgur.com/nPyw54J.png",
-	"thumbnail": "https://i.imgur.com/eEb3Dy7.png",
+	"version": "2.2.13",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/G/globoplay/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/G/globoplay/assets/thumbnail.png",
 	"color": "#ED1A37",
 	"category": "videos",
 	"tags": [

@@ -1,5 +1,6 @@
 {
-	"$schema": "https://schemas.premid.app/metadata/1.7",
+	"$schema": "https://schemas.premid.app/metadata/1.13",
+	"apiVersion": 1,
 	"author": {
 		"name": "Striker",
 		"id": "215509157837537280"
@@ -12,10 +13,6 @@
 		{
 			"name": "Aya",
 			"id": "256422547556401152"
-		},
-		{
-			"name": "Bryan",
-			"id": "293775922757238784"
 		},
 		{
 			"name": "meme8383",
@@ -33,9 +30,9 @@
 		"www.mangadex.org",
 		"mangadex.cc"
 	],
-	"version": "3.0.1",
-	"logo": "https://i.imgur.com/zs8myqz.png",
-	"thumbnail": "https://i.imgur.com/xiKNaUJ.png",
+	"version": "3.0.13",
+	"logo": "https://cdn.rcd.gg/PreMiD/websites/M/MangaDex/assets/logo.png",
+	"thumbnail": "https://cdn.rcd.gg/PreMiD/websites/M/MangaDex/assets/thumbnail.png",
 	"color": "#F18F1E",
 	"category": "anime",
 	"tags": [
