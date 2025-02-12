@@ -1,261 +1,280 @@
+import { Assets } from 'premid'
+
 const presence = new Presence({
-		clientId: "618569989842010122",
-	}),
-	browsingTimestamp = Math.floor(Date.now() / 1000);
-let item, typing: HTMLElement;
+  clientId: '618569989842010122',
+})
+const browsingTimestamp = Math.floor(Date.now() / 1000)
 
-presence.on("UpdateData", async () => {
-	const presenceData: PresenceData = {
-		largeImageKey: "aliexpress",
-	};
+let item, typing: HTMLElement
 
-	presenceData.startTimestamp = browsingTimestamp;
+presence.on('UpdateData', async () => {
+  const presenceData: PresenceData = {
+    largeImageKey: 'https://cdn.rcd.gg/PreMiD/websites/A/AliExpress/assets/logo.png',
+  }
 
-	switch (document.location.hostname) {
-		case "ru.aliexpress.com":
-		case "pt.aliexpress.com":
-		case "es.aliexpress.com":
-		case "fr.aliexpress.com":
-		case "de.aliexpress.com":
-		case "it.aliexpress.com":
-		case "nl.aliexpress.com":
-		case "tr.aliexpress.com":
-		case "ja.aliexpress.com":
-		case "ko.aliexpress.com":
-		case "th.aliexpress.com":
-		case "vi.aliexpress.com":
-		case "ar.aliexpress.com":
-		case "he.aliexpress.com":
-		case "pl.aliexpress.com":
-		case "www.aliexpress.com": {
-			if (document.location.pathname.includes("/item/")) {
-				item = document.querySelector(
-					"#root > div > div.product-main > div > div.product-info > div.product-title"
-				) as HTMLElement;
+  presenceData.startTimestamp = browsingTimestamp
 
-				presenceData.details = "Viewing product:";
-				if (item.textContent.length > 128)
-					presenceData.state = `${item.textContent.substring(0, 125)}...`;
-				else presenceData.state = item.textContent;
+  switch (document.location.hostname) {
+    case 'ru.aliexpress.com':
+    case 'pt.aliexpress.com':
+    case 'es.aliexpress.com':
+    case 'fr.aliexpress.com':
+    case 'de.aliexpress.com':
+    case 'it.aliexpress.com':
+    case 'nl.aliexpress.com':
+    case 'tr.aliexpress.com':
+    case 'ja.aliexpress.com':
+    case 'ko.aliexpress.com':
+    case 'th.aliexpress.com':
+    case 'vi.aliexpress.com':
+    case 'ar.aliexpress.com':
+    case 'he.aliexpress.com':
+    case 'pl.aliexpress.com':
+    case 'www.aliexpress.com': {
+      if (document.location.pathname.includes('/item/')) {
+        item = document.querySelector<HTMLElement>(
+          '#root > div > div.product-main > div > div.product-info > div.product-title',
+        )
 
-				delete presenceData.smallImageKey;
+        presenceData.details = 'Viewing product:'
+        if (item?.textContent && item.textContent.length > 128)
+          presenceData.state = `${item.textContent.substring(0, 125)}...`
+        else presenceData.state = item?.textContent
 
-				presence.setActivity(presenceData);
-			} else if (document.location.pathname.includes("/store/")) {
-				item = document.querySelector(
-					"#hd > div > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div > div > div:nth-child(1) > span"
-				) as HTMLElement;
-				presenceData.details = "Viewing store:";
-				presenceData.state = item.textContent;
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else if (document.location.pathname.includes('/store/')) {
+        item = document.querySelector(
+          '#hd > div > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div > div > div:nth-child(1) > span',
+        ) as HTMLElement
+        presenceData.details = 'Viewing store:'
+        presenceData.state = item.textContent
 
-				presence.setActivity(presenceData);
-			} else if (document.location.pathname.includes("/category/")) {
-				item = document.querySelector(
-					"#root > div > div > div.main-content > div.right-menu > div > div.top-container > div.nav-breadcrumb > div > div > span > span > span"
-				) as HTMLElement;
+        delete presenceData.smallImageKey
 
-				presenceData.details = "Viewing category:";
-				presenceData.state = item.textContent;
+        presence.setActivity(presenceData)
+      }
+      else if (document.location.pathname.includes('/category/')) {
+        item = document.querySelector(
+          '#root > div > div > div.main-content > div.right-menu > div > div.top-container > div.nav-breadcrumb > div > div > span > span > span',
+        ) as HTMLElement
 
-				delete presenceData.smallImageKey;
+        presenceData.details = 'Viewing category:'
+        presenceData.state = item.textContent
 
-				presence.setActivity(presenceData);
-			} else if (
-				document.location.pathname.includes("/wholesale") &&
-				document.location.search.includes("SearchText")
-			) {
-				item = document.querySelector("#search-key") as HTMLInputElement;
+        delete presenceData.smallImageKey
 
-				presenceData.details = "Searching for:";
-				presenceData.state = item.value;
+        presence.setActivity(presenceData)
+      }
+      else if (
+        document.location.pathname.includes('/wholesale')
+        && document.location.search.includes('SearchText')
+      ) {
+        item = document.querySelector('#search-key') as HTMLInputElement
 
-				presenceData.smallImageKey = "search";
+        presenceData.details = 'Searching for:'
+        presenceData.state = item.value
 
-				presence.setActivity(presenceData);
-			} else presence.setActivity();
+        presenceData.smallImageKey = Assets.Search
 
-			break;
-		}
-		case "message.aliexpress.com":
-		case "msg.aliexpress.com": {
-			if (
-				document.querySelector(
-					"#root > div > div > div > span > div.message-view > div.message-view-title > div.message-view-title__content"
-				)
-			) {
-				item = document.querySelector(
-					"#root > div > div > div > span > div.message-view > div.message-view-title > div.message-view-title__content"
-				) as HTMLElement;
-				typing = document.querySelector(
-					"#buyer_msg_send_btn"
-				) as HTMLButtonElement;
-				if (typing) {
-					if (typing.className.includes("icon-plane disable")) {
-						presenceData.details = "Reading dms with:";
-						presenceData.state = item.textContent;
-					} else {
-						presenceData.details = "Typing in dms to:";
-						presenceData.state = item.textContent;
-					}
-				} else {
-					presenceData.details = "Message Center";
-					delete presenceData.state;
-				}
+        presence.setActivity(presenceData)
+      }
+      else {
+        presence.setActivity()
+      }
 
-				delete presenceData.smallImageKey;
+      break
+    }
+    case 'message.aliexpress.com':
+    case 'msg.aliexpress.com': {
+      if (
+        document.querySelector(
+          '#root > div > div > div > span > div.message-view > div.message-view-title > div.message-view-title__content',
+        )
+      ) {
+        item = document.querySelector(
+          '#root > div > div > div > span > div.message-view > div.message-view-title > div.message-view-title__content',
+        ) as HTMLElement
+        typing = document.querySelector(
+          '#buyer_msg_send_btn',
+        ) as HTMLButtonElement
+        if (typing) {
+          if (typing.className.includes('icon-plane disable')) {
+            presenceData.details = 'Reading dms with:'
+            presenceData.state = item.textContent
+          }
+          else {
+            presenceData.details = 'Typing in dms to:'
+            presenceData.state = item.textContent
+          }
+        }
+        else {
+          presenceData.details = 'Message Center'
+          delete presenceData.state
+        }
 
-				presence.setActivity(presenceData);
-			} else {
-				presenceData.details = "Message Center";
-				delete presenceData.state;
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else {
+        presenceData.details = 'Message Center'
+        delete presenceData.state
 
-				presence.setActivity(presenceData);
-			}
+        delete presenceData.smallImageKey
 
-			break;
-		}
-		case "sale.aliexpress.com": {
-			presenceData.details = "Browsing through the sale";
-			delete presenceData.state;
+        presence.setActivity(presenceData)
+      }
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'sale.aliexpress.com': {
+      presenceData.details = 'Browsing through the sale'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "shoppingcart.aliexpress.com": {
-			presenceData.details = "Viewing their shoppingcart";
-			delete presenceData.state;
+      presence.setActivity(presenceData)
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'shoppingcart.aliexpress.com': {
+      presenceData.details = 'Viewing their shoppingcart'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "my.aliexpress.com": {
-			if (document.location.pathname.includes("/wishlist")) {
-				presenceData.details = "Viewing their wishlist";
-				delete presenceData.state;
+      presence.setActivity(presenceData)
 
-				delete presenceData.smallImageKey;
+      break
+    }
+    case 'my.aliexpress.com': {
+      if (document.location.pathname.includes('/wishlist')) {
+        presenceData.details = 'Viewing their wishlist'
+        delete presenceData.state
 
-				presence.setActivity(presenceData);
-			} else if (document.location.pathname.includes("/mytrace")) {
-				presenceData.details = "Viewing their recently";
-				presenceData.state = "viewed products";
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else if (document.location.pathname.includes('/mytrace')) {
+        presenceData.details = 'Viewing their recently'
+        presenceData.state = 'viewed products'
 
-				presence.setActivity(presenceData);
-			} else presence.setActivity();
+        delete presenceData.smallImageKey
 
-			break;
-		}
-		case "home.aliexpress.com":
-		case "star.aliexpress.com": {
-			presenceData.details = "Viewing their AliExpress";
-			presenceData.state = "page / account /profile";
+        presence.setActivity(presenceData)
+      }
+      else {
+        presence.setActivity()
+      }
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'home.aliexpress.com':
+    case 'star.aliexpress.com': {
+      presenceData.details = 'Viewing their AliExpress'
+      presenceData.state = 'page / account /profile'
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "feedback.aliexpress.com": {
-			presenceData.details = "AliExpress Feedback";
-			delete presenceData.state;
+      presence.setActivity(presenceData)
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'feedback.aliexpress.com': {
+      presenceData.details = 'AliExpress Feedback'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "trade.aliexpress.com": {
-			if (
-				document.location.pathname.includes("order_list.htm") ||
-				document.location.pathname.includes("orderList.htm")
-			) {
-				presenceData.details = "Viewing their orders";
-				delete presenceData.state;
+      presence.setActivity(presenceData)
 
-				delete presenceData.smallImageKey;
+      break
+    }
+    case 'trade.aliexpress.com': {
+      if (
+        document.location.pathname.includes('order_list.htm')
+        || document.location.pathname.includes('orderList.htm')
+      ) {
+        presenceData.details = 'Viewing their orders'
+        delete presenceData.state
 
-				presence.setActivity(presenceData);
-			} else if (document.location.pathname.includes("/issue/")) {
-				presenceData.details = "Viewing their";
-				presenceData.state = "Refunds & Disputes";
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else if (document.location.pathname.includes('/issue/')) {
+        presenceData.details = 'Viewing their'
+        presenceData.state = 'Refunds & Disputes'
 
-				presence.setActivity(presenceData);
-			} else if (document.location.pathname.includes("/ordertrash/")) {
-				presenceData.details = "Viewing their";
-				presenceData.state = "deleted orders";
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else if (document.location.pathname.includes('/ordertrash/')) {
+        presenceData.details = 'Viewing their'
+        presenceData.state = 'deleted orders'
 
-				presence.setActivity(presenceData);
-			} else {
-				presenceData.details = "AliExpress Trade Center";
-				delete presenceData.state;
+        delete presenceData.smallImageKey
 
-				delete presenceData.smallImageKey;
+        presence.setActivity(presenceData)
+      }
+      else {
+        presenceData.details = 'AliExpress Trade Center'
+        delete presenceData.state
 
-				presence.setActivity(presenceData);
-			}
+        delete presenceData.smallImageKey
 
-			break;
-		}
-		case "coupon.aliexpress.com": {
-			presenceData.details = "Viewing their coupons";
-			delete presenceData.state;
+        presence.setActivity(presenceData)
+      }
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'coupon.aliexpress.com': {
+      presenceData.details = 'Viewing their coupons'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "ilogisticsaddress.aliexpress.com": {
-			presenceData.details = "Viewing their adress";
-			delete presenceData.state;
+      presence.setActivity(presenceData)
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'ilogisticsaddress.aliexpress.com': {
+      presenceData.details = 'Viewing their adress'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "helppage.aliexpress.com": {
-			presenceData.details = "AliExpress Help Center";
-			delete presenceData.state;
+      presence.setActivity(presenceData)
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'helppage.aliexpress.com': {
+      presenceData.details = 'AliExpress Help Center'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		case "sell.aliexpress.com":
-		case "seller.aliexpress.com": {
-			presenceData.details = "AliExpress Sell Center";
-			delete presenceData.state;
+      presence.setActivity(presenceData)
 
-			delete presenceData.smallImageKey;
+      break
+    }
+    case 'sell.aliexpress.com':
+    case 'seller.aliexpress.com': {
+      presenceData.details = 'AliExpress Sell Center'
+      delete presenceData.state
 
-			presence.setActivity(presenceData);
+      delete presenceData.smallImageKey
 
-			break;
-		}
-		default:
-			presence.setActivity();
-	}
-});
+      presence.setActivity(presenceData)
+
+      break
+    }
+    default:
+      presence.setActivity()
+  }
+})

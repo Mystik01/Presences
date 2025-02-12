@@ -1,157 +1,158 @@
 const presence = new Presence({
-		clientId: "945791515169521694",
-	}),
-	browsingTimestamp = Math.floor(Date.now() / 1000);
+  clientId: '945791515169521694',
+})
+const browsingTimestamp = Math.floor(Date.now() / 1000)
 
-presence.on("UpdateData", async () => {
-	const presenceData: PresenceData = {
-			largeImageKey: "logo",
-			startTimestamp: browsingTimestamp,
-		},
-		{ pathname } = document.location,
-		pathArr = pathname.split("/");
+enum ActivityAssets {
+  Logo = 'https://cdn.rcd.gg/PreMiD/websites/H/Homestuck%5E2/assets/logo.png',
+  Heart = 'https://cdn.rcd.gg/PreMiD/websites/H/Homestuck%5E2/assets/0.png',
+}
 
-	switch (pathArr[1]) {
-		case "":
-			presenceData.details = "Viewing the home page";
-			break;
+presence.on('UpdateData', async () => {
+  const presenceData: PresenceData = {
+    largeImageKey: ActivityAssets.Logo,
+    startTimestamp: browsingTimestamp,
+  }
+  const { pathname } = document.location
+  const pathArr = pathname.split('/')
 
-		case "story":
-			presenceData.details = "Reading Homestuck^2";
-			presenceData.smallImageKey = "heart";
-			if (!pathArr[2]) presenceData.state = `Page 1 of ${await getPages()}`;
-			else presenceData.state = `Page ${pathArr[2]} of ${await getPages()}`;
+  switch (pathArr[1]) {
+    case '':
+      presenceData.details = 'Viewing the home page'
+      break
 
-			if (document.querySelector("h2"))
-				presenceData.smallImageText = document.querySelector("h2").textContent;
-			else {
-				presenceData.smallImageText =
-					document.querySelector("title").textContent;
-			}
-			presenceData.buttons = [
-				{
-					label: "Read Along",
-					url: `https://www.homestuck2.com${pathname}`,
-				},
-			];
-			break;
+    case 'story':
+      presenceData.details = 'Reading Homestuck^2'
+      presenceData.smallImageKey = ActivityAssets.Heart
+      if (!pathArr[2])
+        presenceData.state = `Page 1 of ${await getPages()}`
+      else presenceData.state = `Page ${pathArr[2]} of ${await getPages()}`
 
-		case "bonus":
-			presenceData.details = "Viewing bonus content";
-			switch (pathArr[2]) {
-				case "catnapped":
-					presenceData.details = "Reading Catnapped";
-					presenceData.smallImageKey = "heart";
-					presenceData.state = `Page ${pathArr[3]} of 28`;
-					presenceData.smallImageText =
-						document.querySelector("h2").textContent;
-					presenceData.buttons = [
-						{
-							label: "Read Along",
-							url: `https://www.homestuck2.com${pathname}`,
-						},
-					];
-					break;
+      if (document.querySelector('h2')) {
+        presenceData.smallImageText = document.querySelector('h2')?.textContent
+      }
+      else {
+        presenceData.smallImageText = document.querySelector('title')?.textContent
+      }
+      presenceData.buttons = [
+        {
+          label: 'Read Along',
+          url: `https://www.homestuck2.com${pathname}`,
+        },
+      ]
+      break
 
-				case "a-treatise-on-representational-democracy":
-					presenceData.details =
-						"Reading A Treatise on Representational Democracy";
-					presenceData.smallImageKey = "heart";
-					presenceData.state = `Page ${pathArr[3]} of 13`;
-					presenceData.smallImageText =
-						document.querySelector("h2").textContent;
-					presenceData.buttons = [
-						{
-							label: "Read Along",
-							url: `https://www.homestuck2.com${pathname}`,
-						},
-					];
-					break;
+    case 'bonus':
+      presenceData.details = 'Viewing bonus content'
+      switch (pathArr[2]) {
+        case 'catnapped':
+          presenceData.details = 'Reading Catnapped'
+          presenceData.smallImageKey = ActivityAssets.Heart
+          presenceData.state = `Page ${pathArr[3]} of 28`
+          presenceData.smallImageText = document.querySelector('h2')?.textContent
+          presenceData.buttons = [
+            {
+              label: 'Read Along',
+              url: `https://www.homestuck2.com${pathname}`,
+            },
+          ]
+          break
 
-				case "diamonds-dames-and-dads":
-					presenceData.details = "Reading Diamonds, Dames, and Dads";
-					presenceData.smallImageKey = "heart";
-					presenceData.state = `Page ${pathArr[3]} of 46`;
-					presenceData.smallImageText =
-						document.querySelector("h2").textContent;
-					presenceData.buttons = [
-						{
-							label: "Read Along",
-							url: `https://www.homestuck2.com${pathname}`,
-						},
-					];
-					break;
+        case 'a-treatise-on-representational-democracy':
+          presenceData.details = 'Reading A Treatise on Representational Democracy'
+          presenceData.smallImageKey = ActivityAssets.Heart
+          presenceData.state = `Page ${pathArr[3]} of 13`
+          presenceData.smallImageText = document.querySelector('h2')?.textContent
+          presenceData.buttons = [
+            {
+              label: 'Read Along',
+              url: `https://www.homestuck2.com${pathname}`,
+            },
+          ]
+          break
 
-				case "a-threat-sensed":
-					presenceData.details = "Reading A Threat, Sensed";
-					presenceData.smallImageKey = "heart";
-					presenceData.state = `Page ${pathArr[3]} of 13`;
-					presenceData.smallImageText =
-						document.querySelector("h2").textContent;
-					presenceData.buttons = [
-						{
-							label: "Read Along",
-							url: `https://www.homestuck2.com${pathname}`,
-						},
-					];
-					break;
+        case 'diamonds-dames-and-dads':
+          presenceData.details = 'Reading Diamonds, Dames, and Dads'
+          presenceData.smallImageKey = ActivityAssets.Heart
+          presenceData.state = `Page ${pathArr[3]} of 46`
+          presenceData.smallImageText = document.querySelector('h2')?.textContent
+          presenceData.buttons = [
+            {
+              label: 'Read Along',
+              url: `https://www.homestuck2.com${pathname}`,
+            },
+          ]
+          break
 
-				case "the-influencers":
-					presenceData.details = "Reading The Influencers";
-					presenceData.smallImageKey = "heart";
-					presenceData.state = `Page ${pathArr[3]} of 34`;
-					presenceData.smallImageText =
-						document.querySelector("h2").textContent;
-					presenceData.buttons = [
-						{
-							label: "Read Along",
-							url: `https://www.homestuck2.com${pathname}`,
-						},
-					];
-					break;
+        case 'a-threat-sensed':
+          presenceData.details = 'Reading A Threat, Sensed'
+          presenceData.smallImageKey = ActivityAssets.Heart
+          presenceData.state = `Page ${pathArr[3]} of 13`
+          presenceData.smallImageText = document.querySelector('h2')?.textContent
+          presenceData.buttons = [
+            {
+              label: 'Read Along',
+              url: `https://www.homestuck2.com${pathname}`,
+            },
+          ]
+          break
 
-				default:
-					break;
-			}
-			break;
+        case 'the-influencers':
+          presenceData.details = 'Reading The Influencers'
+          presenceData.smallImageKey = ActivityAssets.Heart
+          presenceData.state = `Page ${pathArr[3]} of 34`
+          presenceData.smallImageText = document.querySelector('h2')?.textContent
+          presenceData.buttons = [
+            {
+              label: 'Read Along',
+              url: `https://www.homestuck2.com${pathname}`,
+            },
+          ]
+          break
 
-		case "about":
-			presenceData.details = "Viewing the about page";
-			break;
+        default:
+          break
+      }
+      break
 
-		case "contacts":
-			presenceData.details = "Viewing the contact information";
-			break;
+    case 'about':
+      presenceData.details = 'Viewing the about page'
+      break
 
-		case "credits":
-			presenceData.details = "Viewing the credits";
-			break;
+    case 'contacts':
+      presenceData.details = 'Viewing the contact information'
+      break
 
-		case "log":
-			presenceData.details = "Viewing the adventure log";
-			break;
+    case 'credits':
+      presenceData.details = 'Viewing the credits'
+      break
 
-		case "privacy-policy":
-			presenceData.details = "Viewing the privacy policy";
-			break;
+    case 'log':
+      presenceData.details = 'Viewing the adventure log'
+      break
 
-		case "recap":
-			presenceData.details = "Viewing recap";
-			break;
+    case 'privacy-policy':
+      presenceData.details = 'Viewing the privacy policy'
+      break
 
-		default:
-			presenceData.details = "Viewing an unsupported page";
-			break;
-	}
+    case 'recap':
+      presenceData.details = 'Viewing recap'
+      break
 
-	if (presenceData.details) presence.setActivity(presenceData);
-	else presence.setActivity();
-});
+    default:
+      presenceData.details = 'Viewing an unsupported page'
+      break
+  }
+
+  if (presenceData.details)
+    presence.setActivity(presenceData)
+  else presence.setActivity()
+})
 
 async function getPages() {
-	const response = await fetch(
-			`https://api.rss2json.com/v1/api.json?rss_url=${"https://homestuck2.com/story/rss"}`
-		),
-		data = await response.json();
-	return data.items[0].title;
+  const response = await fetch(
+    `https://api.rss2json.com/v1/api.json?rss_url=${'https://homestuck2.com/story/rss'}`,
+  )
+  const data = await response.json()
+  return data.items[0].title
 }
